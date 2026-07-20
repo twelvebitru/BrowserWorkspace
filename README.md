@@ -15,11 +15,8 @@ A modern Chrome & Edge extension for saving, managing and restoring browser work
 ## 📸 Preview
 
 <p align="center">
-  <img src="assets/1.png" width="700">
-</p>
-
-<p align="center">
-  <img src="assets/2.png" width="700">
+  <img src="assets/1.png" width="400">
+  <img src="assets/2.png" width="400">
 </p>
 
 ---
