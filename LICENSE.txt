@@ -1,0 +1,16 @@
+Copyright (c) 2026 TwelveBitRU
+
+All rights reserved.
+
+This source code and associated files are protected by copyright.
+
+Permission is not granted to:
+- copy this project;
+- modify this project;
+- redistribute this project;
+- publish derivative works;
+- use this code commercially;
+
+without explicit written permission from TwelveBitRU.
+
+The software is provided for viewing and educational purposes only.

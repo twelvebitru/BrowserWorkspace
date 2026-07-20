@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Workspace</title>
+  <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Шапка -->
+    <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
+      <h1 class="logo">Browser Workspace</h1>
+      <!-- Кнопка настроек справа сверху -->
+      <button id="btn-open-settings" class="btn btn-ghost btn-sm" title="Настройки / Settings" style="font-size: 18px; padding: 4px 8px;">
+        ⚙️
+      </button>
+    </header>
+
+    <!-- Блок автовосстановления (скрыт по умолчанию) -->
+    <div id="recovery-banner" class="banner hidden">
+      <div class="banner-text">
+        <span id="txt-recovery-title">Восстановить последние вкладки?</span>
+        <small id="recovery-count"></small>
+      </div>
+      <div class="banner-actions">
+        <button id="btn-recover" class="btn btn-primary btn-sm">Да</button>
+        <button id="btn-dismiss-recovery" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+    </div>
+
+    <!-- Действия и поиск -->
+    <section class="section actions-section">
+      <button id="btn-open-modal" class="btn btn-primary btn-full">
+        + Создать сессию
+      </button>
+
+      <!-- Новый удобный блок панели инструментов -->
+      <div class="toolbar">
+        <!-- 1 строка: Поиск на всю ширину -->
+        <input type="text" id="search-input" class="input" placeholder="Поиск сессий...">
+        
+        <!-- 2 строка: Сортировка и Импорт/Экспорт -->
+        <div class="toolbar-row">
+          <select id="sort-select" class="select">
+            <option value="newest" id="opt-newest">Сначала новые</option>
+            <option value="oldest" id="opt-oldest">Сначала старые</option>
+            <option value="name" id="opt-name">По алфавиту</option>
+          </select>
+          <div class="import-export-group">
+            <button id="btn-export-all" class="btn btn-secondary btn-sm" title="Экспорт всех сессий">Экспорт</button>
+            <label id="lbl-import" for="import-file" class="btn btn-secondary btn-sm" title="Импорт сессий">Импорт</label>
+            <input type="file" id="import-file" accept=".browserworkspace,.json" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Список сессий -->
+    <main class="section sessions-section">
+      <div class="section-header">
+        <span id="txt-my-sessions">Мои сессии</span>
+        <span id="total-sessions-count" class="counter">0</span>
+      </div>
+      <div id="sessions-list" class="sessions-list">
+        <!-- Карточки генерируются динамически -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Модальное окно создания сессии -->
+  <div id="modal-create" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="txt-modal-create-title">Новая сессия</h2>
+      <p id="modal-tabs-count" class="text-muted"></p>
+      <input type="text" id="session-name-input" class="input" placeholder="Например: Работа или Проект Х">
+      <div class="modal-actions">
+        <button id="btn-cancel-create" class="btn btn-secondary">Отмена</button>
+        <button id="btn-save-session" class="btn btn-primary">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Компактное окно переименования -->
+  <div id="modal-rename" class="modal hidden">
+    <div class="modal-content modal-sm">
+      <h3 id="txt-modal-rename-title">Переименовать</h3>
+      <input type="text" id="rename-input" class="input" placeholder="Новое название">
+      <div class="modal-actions">
+        <button id="btn-cancel-rename" class="btn btn-secondary btn-sm">Отмена</button>
+        <button id="btn-save-rename" class="btn btn-primary btn-sm">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Компактное окно подтверждения удаления -->
+  <div id="modal-confirm" class="modal hidden">
+    <div class="modal-content modal-sm">
+      <h3 id="txt-modal-confirm-title">Удалить сессию?</h3>
+      <p id="confirm-text" class="text-muted"></p>
+      <div class="modal-actions">
+        <button id="btn-cancel-confirm" class="btn btn-secondary btn-sm">Отмена</button>
+        <button id="btn-yes-confirm" class="btn btn-danger btn-sm">Удалить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кастомное контекстное меню (ПКМ) -->
+  <div id="context-menu" class="context-menu hidden">
+    <button data-action="open-current" id="ctx-open-current">Открыть в текущем окне</button>
+    <button data-action="rename" id="ctx-rename">Переименовать</button>
+    <button data-action="pin" id="ctx-pin">Закрепить / Открепить</button>
+    <button data-action="duplicate" id="ctx-duplicate">Дублировать</button>
+    <button data-action="export" id="ctx-export">Экспортировать</button>
+    <hr>
+    <button data-action="delete" id="ctx-delete" class="text-danger">Удалить</button>
+  </div>
+
+  <!-- Модальное окно НАСТРОЕК -->
+  <div id="modal-settings" class="modal hidden">
+    <div class="modal-content" style="max-height: 85vh; overflow-y: auto;">
+      
+      <!-- Шапка настроек с выбором языка (БЕЗ ЭМОДЗИ) -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 id="txt-settings-title" style="margin: 0;">Настройки</h3>
+        <select id="lang-select" class="select" style="width: auto; padding: 4px 8px;">
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+
+      <!-- Блок инструкции -->
+      <h4 id="txt-guide-title" style="margin-bottom: 8px; font-size: 14px;">Инструкция приложения</h4>
+      <div class="guide-text" style="font-size: 13px; line-height: 1.5; background: var(--bg-main); padding: 10px; border-radius: var(--radius); margin-bottom: 15px;">
+        <div id="guide-ru">
+          <p>1. <b>Создание:</b> Откройте нужные вкладки и нажмите «+ Создать сессию».</p>
+          <p>2. <b>Управление:</b> Нажмите правой кнопкой мыши на сессию для меню действий (удалить, переименовать и т.д.).</p>
+          <p>3. <b>Экспорт/Импорт:</b> Сохраняйте сессии в файл для переноса или резервного копирования.</p>
+        </div>
+        <div id="guide-en" class="hidden">
+          <p>1. <b>Create:</b> Open your desired tabs and click "+ Create session".</p>
+          <p>2. <b>Manage:</b> Right-click on any session card to open the action menu (delete, rename, etc.).</p>
+          <p>3. <b>Export/Import:</b> Save your sessions to a file for backup or transferring to another PC.</p>
+        </div>
+      </div>
+
+      <!-- Блок разработчика и доната -->
+      <div style="text-align: center; border-top: 1px solid var(--border); padding-top: 15px; margin-bottom: 15px;">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+          <span id="txt-dev-label">Издатель и разработчик:</span><br>
+          <b style="color: var(--text-main); font-size: 16px;">TwelveBit</b>
+        </p>
+        <!-- Кнопка доната -->
+        <a href="https://www.donationalerts.com/r/twelvebit" target="_blank" class="btn btn-primary" style="display: block; width: 100%; text-decoration: none; text-align: center; background: #ff7700; color: white; font-weight: bold;">
+          💖 <span id="txt-donate-btn">Поддержать донатом</span>
+        </a>
+      </div>
+
+      <!-- Кнопка закрытия -->
+      <button id="btn-close-settings" class="btn btn-secondary" style="width: 100%;">
+        <span id="txt-close-btn">Закрыть</span>
+      </button>
+
+    </div>
+  </div>
+
+  <script type="module" src="src/components/Sidebar.js"></script>
+</body>
+</html>
