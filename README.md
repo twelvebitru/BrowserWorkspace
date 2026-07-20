@@ -1,23 +1,42 @@
-# 🌐 Browser Workspace
+# Browser Workspace
 
-A modern browser extension for managing tabs, sessions and workspace environments.
+<p align="center">
+  <img src="assets/icon.png" width="128" height="128">
+</p>
 
-Browser Workspace helps users organize their browser workflow by saving tab groups, restoring sessions and managing multiple workspaces.
+<h1 align="center">Browser Workspace</h1>
+
+<p align="center">
+A modern Chrome & Edge extension for saving, managing and restoring browser workspaces.
+</p>
+
+---
+
+## 📸 Preview
+
+<p align="center">
+  <img src="assets/1.png" width="700">
+</p>
+
+<p align="center">
+  <img src="assets/2.png" width="700">
+</p>
 
 ---
 
 ## ✨ Features
 
 - 📂 Save browser sessions
-- 🔄 Restore closed workspaces
-- 🗂 Organize tabs into groups
-- 🌙 Dark / Light theme support
-- 📤 Export and import sessions
-- ⚡ Fast Chromium-based browser integration
+- 🔄 Restore saved workspaces
+- 📑 Manage browser tabs
+- 📤 Export sessions
+- 📥 Import sessions
+- 🌙 Modern dark interface
+- ⚡ Lightweight Manifest V3 extension
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Technologies
 
 - JavaScript
 - HTML5
@@ -29,48 +48,44 @@ Browser Workspace helps users organize their browser workflow by saving tab grou
 
 ## 📦 Installation
 
-### Developer Mode
+1. Download this repository
+2. Open Chrome Extensions page:
 
-1. Download or clone this repository
-2. Open Chrome/Edge extensions page:
 
 chrome://extensions/
 
-3. Enable:
 
-Developer Mode
-
-4. Click:
-
-
-5. Select the project folder
+3. Enable Developer Mode
+4. Click **Load unpacked**
+5. Select the BrowserWorkspace folder
 
 ---
 
-## 🚀 Roadmap
+## 📁 Project Structure
 
-- [ ] Cloud synchronization
-- [ ] Workspace sharing
-- [ ] Custom workspace icons
-- [ ] Browser profiles support
 
----
+BrowserWorkspace
+│
+├── background.js
+├── content.js
+├── sidebar.js
+├── sidepanel.html
+├── sessioncard.js
+├── import.export.js
+├── ThemeToggle.js
+└── main.css
 
-## 📜 Copyright
-
-Unless otherwise specified, all projects published under this GitHub account are protected by copyright.
-
-Unauthorized copying, modification, redistribution or publication of source code is prohibited without the author's permission.
-
-© 2026 TwelveBitRU. All rights reserved.
 
 ---
 
-## 👨‍💻 Author
+## 📜 License
 
-**TwelveBitRU**
+All Rights Reserved.
 
-Browser Extension Developer
+This project and its source code may not be copied, modified, redistributed or published without permission.
 
-GitHub:
-https://github.com/TwelveBitRU
+---
+
+## 👤 Author
+
+TwelveBitRU
